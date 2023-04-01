@@ -18,7 +18,7 @@ int main(){
             max_flies.insert(flies[j]);
             if(s==max_flies.size()){
                 if(m<s) m==s;
-                break;
+                break; //alo
             }
         }
     }

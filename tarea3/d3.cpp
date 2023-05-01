@@ -4,14 +4,14 @@ using namespace std;
 typedef long long ll;
 using state = pair<ll,int>;
 ll INF = 1e18;
-vector <ll> parent;
 
-ll nearShortPath(vector <vector <state>>& adj, int n, int s, int m){
+ll nearShortPath(vector <vector <state>>& adj, int n, int s, int d){
+	// Dijkstra Algorithm
 	priority_queue <state, vector<state>, greater<state>> pq;
-	vector <ll> dist(n, INF);
+	vector <ll> dist(n, INF), parent(n);
 	for(int i=0; i<n; i++) parent[i] = i;
-	pq.push({0,0});
-	dist[0] = 0;
+	pq.push({s,0});
+	dist[s] = 0;
 	while(!pq.empty()){
 		auto [peso_camino, u] = pq.top();
 		pq.pop();
@@ -24,12 +24,33 @@ ll nearShortPath(vector <vector <state>>& adj, int n, int s, int m){
 			}
 		}
 	}
+	if(dist[d] == INF) return INF;
+	// Remove edges in shortest path (change its weight to INF)
+    vector<int> path;
+	int node = d;
+	while(parent[node]!=node){
+		path.push_back(node);
+		node = parent[node];
+	}
+	path.push_back(s);
+	reverse(path.begin(), path.end());
+	for(int it:path){
+		for(auto [v, w] : adj[it]){
+			if(v==path[it+1]){
+				w = INF;
+				break;
+			}
+		}
+	}
+	return dist[d];
 }
 
 int main(){
 	int n=2;
 	while(n>1){
+		// Adjacency list
 		int m, s, d; cin >> n >> m >> s >> d;
+		if(n<2) return 0;
 		vector <vector <state>> adj(n); 
 		for(int i=0; i<m; i++){
 			int u, v;
@@ -37,14 +58,15 @@ int main(){
 			cin >> u >> v >> w;
 			adj[u].push_back({v, w});
 		}
-		ll currDist = nearShortPath(adj, n, s, m);
-		ll shortDist = currDist;
-		if(shortDist==INF){
+		// Near Shortest Path
+		ll currDist = nearShortPath(adj, n, s, d);
+		if(currDist==INF){
 			cout<<-1<<endl;
 			return 0;
 		}
-		while(currDist==shortDist) currDist = nearShortPath(adj, n, s, m);
-		if(shortDist==INF){
+		ll shortDist = currDist;
+		while(currDist==shortDist) currDist = nearShortPath(adj, n, s, d);
+		if(currDist==INF){
 			cout<<-1<<endl;
 			return 0;
 		}

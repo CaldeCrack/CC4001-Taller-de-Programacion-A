@@ -15,7 +15,7 @@ int main(){
 		u--;
 		v--;
 		adj[u].push_back({v, w});
-		adj[v].push_back({u, w});
+		// adj[v].push_back({u, w}); unidireccional
 	}
 	priority_queue <state, vector<state>, greater<state>> pq;
 	vector <ll> dist(n, INF), parent(n);
@@ -34,18 +34,4 @@ int main(){
 			}
 		}
 	}
-	if(dist[n-1] == INF){
-        cout<<-1<<endl;
-        return 0;
-    }
-    vector<int> path;
-	int node = n-1;
-	while(parent[node]!=node){
-		path.push_back(node+1);
-		node = parent[node];
-	}
-	path.push_back(1);
-	reverse(path.begin(), path.end());
-	for(int it:path) cout<<it<<" ";
-	return 0;
 }

@@ -2,10 +2,10 @@
 using namespace std;
 
 typedef long long ll;
-using state = pair<ll,int>;
+using state = pair<ll,ll>;
 ll INF = 1e18;
 
-ll nearShortPath(vector <vector <state>>& adj, int n, int s, int d){
+ll nearShortPath(vector <vector <state>> &adj, int n, int s, int d){
 	// Dijkstra Algorithm
 	priority_queue <state, vector<state>, greater<state>> pq;
 	vector <ll> dist(n, INF), parent(n);
@@ -35,9 +35,9 @@ ll nearShortPath(vector <vector <state>>& adj, int n, int s, int d){
 	path.push_back(s);
 	reverse(path.begin(), path.end());
 	for(int it:path){
-		for(auto [v, w] : adj[it]){
-			if(v==path[it+1]){
-				w = INF;
+		for(int i=0; i<adj[it].size(); i++){
+			if(adj[it][i].first==path[it+1]){
+				adj[it][i].second = INF;
 				break;
 			}
 		}
@@ -46,11 +46,11 @@ ll nearShortPath(vector <vector <state>>& adj, int n, int s, int d){
 }
 
 int main(){
-	int n=2;
-	while(n>1){
+	while(1){
 		// Adjacency list
-		int m, s, d; cin >> n >> m >> s >> d;
-		if(n<2) return 0;
+		int n, m; cin >> n >> m;
+		if(n+m==0) break;
+		int s, d; cin >> s >> d;
 		vector <vector <state>> adj(n); 
 		for(int i=0; i<m; i++){
 			int u, v;
@@ -62,13 +62,15 @@ int main(){
 		ll currDist = nearShortPath(adj, n, s, d);
 		if(currDist==INF){
 			cout<<-1<<endl;
-			return 0;
+			continue;
 		}
 		ll shortDist = currDist;
-		while(currDist==shortDist) currDist = nearShortPath(adj, n, s, d);
+		while(currDist==shortDist){
+			currDist = nearShortPath(adj, n, s, d);
+		}
 		if(currDist==INF){
 			cout<<-1<<endl;
-			return 0;
+			continue;
 		}
 		cout<<currDist<<endl;
 	}

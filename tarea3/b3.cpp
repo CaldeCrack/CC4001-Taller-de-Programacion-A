@@ -27,7 +27,7 @@ int main(){
 		pq.pop();
 		if(peso_camino != dist[u]) continue;
 		for(auto [v, w] : adj[u]){
-			if(peso_camino + w < dist[v]){
+			if(peso_camino+w < dist[v]){
 				dist[v] = peso_camino+w;
 				pq.push({dist[v], v});
                 parent[v] = u;

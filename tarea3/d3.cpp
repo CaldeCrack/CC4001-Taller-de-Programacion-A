@@ -50,9 +50,10 @@ ll nearShortPath(vector <vector <state>> &adj, int n, int s, int d){
 			for(int k=0; k<adj[j.first].size(); k++){
 				minDistance = min(minDistance, adj[j.first][k].second);
 			}
-			cout<<"minDistance: "<<minDistance<<endl;
+			cout<<"bestDistance: "<<bestDistance<<endl;
 			for(int k=0; k<adj[j.first].size(); k++){
-				cout<<"nodo: "<<adj[j.first][k].first<<" "<<adj[j.first][k].second<<endl;
+				cout<<"nodo adj: "<<adj[j.first][k].first<<" "<<adj[j.first][k].second<<endl;
+				cout<<"nodo: "<<j.first<<" "<<j.second<<endl;
 				if(adj[j.first][k].first==i && adj[j.first][k].second == minDistance && j.second <= bestDistance){
 					cout<<"infinito"<<endl;
 					adj[j.first][k].second = INF;

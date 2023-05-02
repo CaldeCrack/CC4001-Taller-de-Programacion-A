@@ -17,10 +17,10 @@ void fillSet(set<ll> &shortNodes, vector<vector<state>> parents, int s, int d, l
 ll nearShortPath(vector <vector <state>> &adj, int n, int s, int d){
 	// Dijkstra Algorithm
 	priority_queue <state, vector<state>, greater<state>> pq;
-	vector<ll> dist(n, INF);
 	vector<vector<state>> parents(n);
-	ll bestDistance;
+	vector<ll> dist(n, INF);
 	set<ll> shortNodes;
+	ll bestDistance;
 	pq.push({0,s});
 	dist[s] = 0;
 	while(!pq.empty()){
@@ -29,33 +29,33 @@ ll nearShortPath(vector <vector <state>> &adj, int n, int s, int d){
 		if(path_weight != dist[u]) continue;
 		for(auto [v, w] : adj[u]){
 			if(path_weight + w <= dist[v] && w != INF){
-				cout<<"nodo / peso: "<<v<<" "<<w<<endl;
+				// cout<<"nodo / peso: "<<v<<" "<<w<<endl;
 				dist[v] = path_weight+w;
 				pq.push({dist[v], v});
                 parents[v].push_back({u, path_weight+w});
 			}
 		}
 	}
+	if(dist[d] == INF) return INF; //! mover arriba probablemente
 	bestDistance = dist[d];
 	shortNodes.insert(d);
 	fillSet(shortNodes, parents, s, d, bestDistance);
-	cout<<"padres de d:"<<endl; for(auto i:parents[d]) cout<<i.first<<" "<<i.second<<endl;
-	cout<<"nodos en shortNodes: "; for(auto i:shortNodes) cout<<i<<" "; cout<<endl;
-	cout<<"distancias: "; for(auto i:dist) cout<<i<<" "; cout<<endl;
-	if(dist[d] == INF) return INF;
+	// cout<<"padres de d:"<<endl; for(auto i:parents[d]) cout<<i.first<<" "<<i.second<<endl;
+	// cout<<"nodos en shortNodes: "; for(auto i:shortNodes) cout<<i<<" "; cout<<endl;
+	// cout<<"distancias: "; for(auto i:dist) cout<<i<<" "; cout<<endl;
 	// Remove edges in shortest path (change its weight to INF)
 	for(auto i:shortNodes){
 		for(auto j:parents[i]){
 			for(int k=0; k<adj[j.first].size(); k++){
-				if(adj[j.first][k].first==i && j.second <= bestDistance){
-					cout<<"nodo infinito: "<<j.first<<" "<<j.second<<endl;
+				// cout<<"nodo: "<<j.first<<" "<<j.second<<endl;
+				if(adj[j.first][k].first==i && adj[j.first][k].second <= bestDistance && j.second <= bestDistance){
+					// cout<<"infinito"<<endl;
 					adj[j.first][k].second = INF;
 					continue;
 				}
 			}
 		}
 	}
-	cout<<"adyacencia: "<<adj[0][5].second<<endl;
 	return dist[d];
 }
 
@@ -64,7 +64,7 @@ int main(){
 		// Adjacency list
 		int n, m; cin >> n >> m;
 		if(n<2) break;
-		cout<<"----- nuevo caso -----"<<endl;
+		// cout<<"----- nuevo caso -----"<<endl;
 		int s, d; cin >> s >> d;
 		vector <vector <state>> adj(n); 
 		for(int i=0; i<m; i++){
@@ -80,7 +80,7 @@ int main(){
 			continue;
 		}
 		ll shortDist = currDist;
-		cout<<currDist<<endl;
+		// cout<<currDist<<endl;
 		// while(currDist==shortDist) currDist = nearShortPath(adj, n, s, d);
 		currDist = nearShortPath(adj, n, s, d);
 		if(currDist==INF){

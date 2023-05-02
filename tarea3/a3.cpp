@@ -2,58 +2,57 @@
 using namespace std;
 
 typedef long long ll;
-using state = pair<ll,ll>;
+using state = pair<int,int>;
 ll INF = 1e18;
 
 void dijkstra(int s, int n, vector<state> adj[], vector<ll> &dist){
-	priority_queue <state, vector<state>, greater<state>> pq;
 	dist.assign(n, INF);
 	dist[s] = 0;
-	pq.push({0, s});
-	while (!pq.empty()) {
-		auto [peso_camino, u] = pq.top();
+	priority_queue<state, vector<state>,greater<state>> pq;
+	pq.push({dist[s], s});
+	while(!pq.empty()){
+		int u = pq.top().second;
 		pq.pop();
-		if(peso_camino != dist[u]) continue; //! maybe quitar
-		for (auto [v, w] : adj[u]) {
-			if (dist[u] + w < dist[v]) {
+		for(auto &edge:adj[u]){
+			int v = edge.first;
+			int w = edge.second;
+			if(dist[u] + w < dist[v]){
 				dist[v] = dist[u] + w;
-				pq.push({ dist[v], v });
+				pq.push({dist[v],v});
 			}
 		}
 	}
 }
 
-void minCostPath(vector<pair<ll,state>> &edges, int n, int m){
+void minCostPath(vector<pair<int, state>> &edges, int n, int m){
 	vector<state> adj[100005];
 	for(int i=0; i<m; i++){
-		ll x = edges[i].first;
-		auto [y, z] = edges[i].second;
-		adj[x].push_back({y, z});
-		adj[y].push_back({x, z});
+		int x = edges[i].first;
+        auto [y, z] = edges[i].second;
+		adj[x].push_back({y,z});
+		adj[y].push_back({x,z});
 	}
-	vector<ll> dist_from_source;
-	vector<ll> dist_from_dest;
-	dijkstra(0, n, adj, dist_from_source);
-	dijkstra(n, n, adj, dist_from_dest);
-	ll min_cost = dist_from_source[n];
-	for (auto &it:edges) {
-		ll u = it.first;
-		auto [v, c] = it.second;
-		ll cur_cost = dist_from_source[u]+c/2+dist_from_dest[v];
+	vector<ll> dist_from_s;
+	vector<ll> dist_from_d;
+	dijkstra(1, n+1, adj, dist_from_s);
+	dijkstra(n, n+1, adj, dist_from_d);
+	ll min_cost = dist_from_s[n];
+	for(auto &it:edges){
+		int u = it.first;
+        auto [v,c] = it.second;
+		ll cur_cost = dist_from_s[u]+c/2+dist_from_d[v]; // agradecido maximo
 		min_cost = min(min_cost, cur_cost);
 	}
-	cout << min_cost << '\n';
+	cout<<min_cost<<endl;
 }
 
 int main(){
 	int n, m;
 	cin>>n>>m;
-	vector<pair<ll,state>> edges;
+	vector<pair<int, state>> edges;
 	for(int i=0; i<m; i++){
-		ll a, b, c;
+		int a, b, c;
 		cin>>a>>b>>c;
-		a--;
-		b--;
 		edges.push_back({a, {b,c}});
 	}
 	minCostPath(edges, n, m);

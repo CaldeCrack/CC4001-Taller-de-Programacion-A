@@ -2,20 +2,19 @@
 using namespace std;
 
 struct point{
-    float x,y;
-    point(float x=0, float y=0): x(x), y(y){}
-    point operator -(point o) {return x-o.x, y-o.y;}
+    double x,y;
+    point(double x=0, double y=0): x(x), y(y){}
     bool leftOf(point A, point B) {return ((B.x - A.x)*(this -> y - A.y) - (B.y - A.y)*(this -> x - A.x)) > 0;}
 };
 
 int main(){
-    float x1, y1, x2, y2; cin>>x1>>y1>>x2>>y2;
+    double x1, y1, x2, y2; cin>>x1>>y1>>x2>>y2;
     int n; cin>>n;
     int cnt = 0;
     point house = {x1, y1};
     point fcgm = {x2, y2};
     while(n--){
-        float a, b, c; cin>>a>>b>>c;
+        double a, b, c; cin>>a>>b>>c;
         if(a == 0){
             if((-c/b - house.y)*(-c/b - fcgm.y) < 0) cnt++;
         }

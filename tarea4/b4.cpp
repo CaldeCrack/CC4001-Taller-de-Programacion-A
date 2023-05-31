@@ -1,20 +1,11 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-
 struct point{
     float x,y;
     point(float x=0, float y=0): x(x), y(y){}
-    point operator -(point o){
-        return x-o.x, y-o.y;
-    }
-    double operator ^(point o){
-        return x*o.y-y*o.x;
-    }
-    bool leftOf(point A, point B){
-        return ((B-A)^((*this)-A)) > 0;
-    }
+    point operator -(point o) {return x-o.x, y-o.y;}
+    bool leftOf(point A, point B) {return ((B.x - A.x)*(this -> y - A.y) - (B.y - A.y)*(this -> x - A.x)) > 0;}
 };
 
 int main(){
@@ -26,24 +17,15 @@ int main(){
     while(n--){
         float a, b, c; cin>>a>>b>>c;
         if(a == 0){
-            if((-c/b - house.y)*(-c/b - fcgm.y) < 0){
-                cnt++;
-                continue;
-            }
+            if((-c/b - house.y)*(-c/b - fcgm.y) < 0) cnt++;
         }
         else if(b == 0){
-            if((-c/a - house.x)*(-c/a - fcgm.x) < 0){
-                cnt++;
-                continue;
-            }
+            if((-c/a - house.x)*(-c/a - fcgm.x) < 0) cnt++;
         }
         else{
             point p1 = {-c/a, 0};
             point p2 = {0, -c/b};
-            if(house.leftOf(p1, p2) != fcgm.leftOf(p1,p2)){
-                cnt++;
-                continue;
-            }
+            if(house.leftOf(p1, p2) != fcgm.leftOf(p1,p2)) cnt++;
         }
     }
     cout<<cnt<<endl;

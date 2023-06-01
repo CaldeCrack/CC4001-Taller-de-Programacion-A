@@ -20,6 +20,8 @@
         "initializer_list": "cpp",
         "ranges": "cpp",
         "regex": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "cmath": "cpp",
+        "iomanip": "cpp"
     }
 }

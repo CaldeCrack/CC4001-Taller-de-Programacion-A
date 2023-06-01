@@ -94,8 +94,31 @@ int main(){
         if(p == sapo) o--;
         if(p == sepo) o--;
     }
+    // solo sapo o sepo
     if(o) cout<<fixed<<setprecision(7)<<sqrt((sapo.x-sepo.x)*(sapo.x-sepo.x)+(sapo.y-sepo.y)*(sapo.y-sepo.y))<<endl;
+    // ambos
     else{
-        
+        // dis1
+        for(int i=0; i<m; i++){
+            if(hull[i] == sapo){
+                while(!(hull[i%m] == sepo)){
+                    dis1 += sqrt((hull[i].x-hull[i+1%m].x)*(hull[i].x-hull[i+1%m].x)+(hull[i].y-hull[i+1%m].y)*(hull[i].y-hull[i+1%m].y));
+                    i++;
+                    i%=m;
+                }
+                break;
+            }
+        }
+        for(int i=0; i<m; i++){
+            if(hull[i] == sepo){
+                while(!(hull[i%m] == sapo)){
+                    dis2 += sqrt((hull[i].x-hull[i+1%m].x)*(hull[i].x-hull[i+1%m].x)+(hull[i].y-hull[i+1%m].y)*(hull[i].y-hull[i+1%m].y));
+                    i++;
+                    i%=m;
+                }
+                break;
+            }
+        }
+        cout<<fixed<<setprecision(7)<<min(dis1, dis2)<<endl;
     }
 }

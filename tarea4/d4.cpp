@@ -16,6 +16,8 @@ struct Point{
 	bool operator<(Point p) const { return tie(x,y) < tie(p.x, p.y); }
 	bool operator==(Point p) const { return tie(x,y) == tie(p.x, p.y); }
 	// De acá en adelante los métodos interpretan al punto como un vector
+    // distancia al punto p
+    T distTo(Point p) { return (*this-p).dist(); }
 	// dist2 retorna el largo al cuadrado. Siempre es mejor usarla al cuadrado cuando sea posible para evitar usar doubles
 	T dist2() const { return x*x + y*y; }
 	double dist() const { return sqrt((double)dist2()); }
@@ -80,7 +82,6 @@ vector <Point<T>> convex_hull(vector <Point<T>>& pts){
 int main(){
 	ios_base::sync_with_stdio(0); cin.tie(0);
 	int n, m, o = 2; cin >> n;
-    double dis1 = 0, dis2 = 0;
     m = n+2;
 	vector <Point<int>> pts(n+2);
 	for(int i=0; i<n; i++){
@@ -90,35 +91,28 @@ int main(){
     Point<int> sapo, sepo;
     sapo = pts[n]; sepo = pts[n+1];
 	vector <Point<int>> hull = convex_hull(pts);
-    for(auto p : hull){
-        if(p == sapo) o--;
-        if(p == sepo) o--;
-    }
-    // solo sapo o sepo
-    if(o) cout<<fixed<<setprecision(7)<<sqrt((sapo.x-sepo.x)*(sapo.x-sepo.x)+(sapo.y-sepo.y)*(sapo.y-sepo.y))<<endl;
+    auto ps = find(hull.begin(), hull.end(), sapo);
+    auto pt = find(hull.begin(), hull.end(), sepo);
+    // solo sapo o sepo (se supone que convex hull asegura que hay al menos uno de los dos)
+    if(ps == hull.end() || pt == hull.end()) cout<<fixed<<setprecision(7)<<sqrt((sapo.x-sepo.x)*(sapo.x-sepo.x)+(sapo.y-sepo.y)*(sapo.y-sepo.y))<<endl;
     // ambos
     else{
-        // dis1
-        for(int i=0; i<m; i++){
-            if(hull[i] == sapo){
-                while(!(hull[i%m] == sepo)){
-                    dis1 += sqrt((hull[i].x-hull[i+1%m].x)*(hull[i].x-hull[i+1%m].x)+(hull[i].y-hull[i+1%m].y)*(hull[i].y-hull[i+1%m].y));
-                    i++;
-                    i%=m;
-                }
-                break;
-            }
+        double dis1 = 0, dis2 = 0;
+        for(auto i = ps; i != pt;){
+            auto nxt = next(i);
+            if (nxt == hull.end())
+                nxt = hull.begin();
+            dis1 += i->distTo(*nxt);
+            i = nxt;
         }
-        for(int i=0; i<m; i++){
-            if(hull[i] == sepo){
-                while(!(hull[i%m] == sapo)){
-                    dis2 += sqrt((hull[i].x-hull[i+1%m].x)*(hull[i].x-hull[i+1%m].x)+(hull[i].y-hull[i+1%m].y)*(hull[i].y-hull[i+1%m].y));
-                    i++;
-                    i%=m;
-                }
-                break;
-            }
+        for(auto i = pt; i != ps;){
+            auto nxt = next(i);
+            if (nxt == hull.end())
+                nxt = hull.begin();
+            dis2 += i->distTo(*nxt);
+            i = nxt;
         }
         cout<<fixed<<setprecision(7)<<min(dis1, dis2)<<endl;
     }
+    return 0;
 }

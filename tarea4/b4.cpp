@@ -11,7 +11,7 @@ int main(){
         ll a, b, c; cin>>a>>b>>c;
         ll dis1 = (a*x1)+(b*y1)+c;
         ll dis2 = (a*x2)+(b*y2)+c;
-        if((dis1>0 && dis2<0) || (dis1<0 && dis2>0)) cnt++;
+        if(dis1<0 != dis2<0) cnt++;
     }
     cout<<cnt<<endl;
 }

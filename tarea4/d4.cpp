@@ -79,13 +79,23 @@ vector <Point<T>> convex_hull(vector <Point<T>>& pts){
 
 int main(){
 	ios_base::sync_with_stdio(0); cin.tie(0);
-	int n; cin >> n;
-    n += 2;
-    double dis = 0;
-	vector <Point<int>> pts(n);
+	int n, m, o = 2; cin >> n;
+    double dis1 = 0, dis2 = 0;
+    m = n+2;
+	vector <Point<int>> pts(n+2);
 	for(int i=0; i<n; i++){
 		cin >> pts[i];
 	}
+    cin>>pts[n]; cin>>pts[n+1];
+    Point<int> sapo, sepo;
+    sapo = pts[n]; sepo = pts[n+1];
 	vector <Point<int>> hull = convex_hull(pts);
-    
+    for(auto p : hull){
+        if(p == sapo) o--;
+        if(p == sepo) o--;
+    }
+    if(o) cout<<fixed<<setprecision(7)<<sqrt((sapo.x-sepo.x)*(sapo.x-sepo.x)+(sapo.y-sepo.y)*(sapo.y-sepo.y))<<endl;
+    else{
+        
+    }
 }

@@ -69,15 +69,16 @@ void dfs(int s) {
 vector <int> conectar_while(int start, int end, int tab) {
 	// numero de la linea donde esta cada while con identacion menor a la ultima linea
 	vector <int> whiles, res;
-	int t = identation(lines[end], "", 1), t2 = t;
+	int t = identations[end], t2 = t;
 	int i = end, j = end;
-	
+
 	// mientras hayan tabulaciones mayores a tab (la tabulacion del while que estamos comprobando actualmente)
 	while (t2 > tab) {
-		t = identation(lines[i], "", 1);
-		if (t2 == t) 
+		t = identations[i];
+		if (t2 == t){
 			whiles.push_back(i);
-		t2--;
+			t2--;
+		}
 		i--;
 	}
 
@@ -108,7 +109,11 @@ vector <int> conectar_while(int start, int end, int tab) {
 	}
 
 	//TODO Caso else
-
+	// cout << "------- whiles ---------" << endl;
+	// for (int i=0; i<whiles.size(); i++)
+	// 	cout << whiles[i] << endl;
+	
+	
 	return res;
 }
 
@@ -233,10 +238,11 @@ void build(int start, int end, bool inside_while) {
 			// Conectamos el while con el cuerpo y la salida
 			adj[blocks[i]].insert(blocks[i+1]);
 			adj[blocks[i]].insert(blocks[s]);
-			// Conectamos los bloques correspondientes con el while 
+			// Conectamos los bloques correspondientes con el while
 			vector <int> res = conectar_while(i+1, s-1, identations[i]);
 			for (int j=0; j<res.size(); j++) {
-				adj[res[j]].insert(blocks[i]);
+				// (res ya entrega blocks)
+				adj[res[j]].insert(2);
 			}
 			
 			build(i+1, s-1, true);
@@ -367,7 +373,7 @@ int main() {
 	cout << "Camino: \n\n";
 	
 	cout << "Complejidad ciclomática\n";
-	cout << arcos - nodos + 2;
+	cout << arcos - nodos + 2 << "\n";
 	
 	return 0;
 }

@@ -66,6 +66,7 @@ void dfs(int s) {
     }
 }
 
+// res: bloques que se van al while padre
 vector <int> conectar_while(int start, int end, int tab) {
 	// numero de la linea donde esta cada while con identacion menor a la ultima linea
 	vector <int> whiles, res;
@@ -95,7 +96,7 @@ vector <int> conectar_while(int start, int end, int tab) {
 	// Caso no habia while
 	if (end == j){
 		for (int i=0; i<whiles.size(); i++)
-			res.push_back(blocks[i]);
+			res.push_back(blocks[whiles[i]]);
 	}
 
 	// Caso habia while
@@ -111,7 +112,10 @@ vector <int> conectar_while(int start, int end, int tab) {
 	//TODO Caso else
 	// cout << "------- whiles ---------" << endl;
 	// for (int i=0; i<whiles.size(); i++)
-	// 	cout << whiles[i] << endl;
+	// 	cout << blocks[whiles[i]] << endl;
+	// cout << "------- res ---------" << endl;
+	// for (int i=0; i<res.size(); i++)
+	// 	cout << res[i] << endl;
 	
 	
 	return res;
@@ -242,7 +246,7 @@ void build(int start, int end, bool inside_while) {
 			vector <int> res = conectar_while(i+1, s-1, identations[i]);
 			for (int j=0; j<res.size(); j++) {
 				// (res ya entrega blocks)
-				adj[res[j]].insert(2);
+				adj[res[j]].insert(blocks[i]);
 			}
 			
 			build(i+1, s-1, true);
@@ -259,7 +263,7 @@ void build(int start, int end, bool inside_while) {
 					
 				continue;
 			}
-				
+			
 			if (!ok && !inside_while) {
 				// Si no se pudo conectar a código, conectamos al
 				// nodo que apunta a "FIN"

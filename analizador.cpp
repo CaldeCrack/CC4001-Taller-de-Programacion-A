@@ -230,15 +230,26 @@ void build(int start, int end, bool inside_while) {
 			}
 
 			int d = i, iden = identations[d-1];
+			bool else_visited = false;
 			while (0 <= --d && identations[i] < identations[d]){
 				auto itr = find(adj[blocks[d]].begin(), adj[blocks[d]].end(), blocks[i+1]);
 				// No cambiar si esta dentro de while
-				if (lower_bound2(adj[blocks[d]], blocks[d]) == -1){ // cambio cosas dentro del while
+				if (lower_bound2(adj[blocks[d]], blocks[d]) == -1) { // cambio cosas dentro del while
 					// Revisar si existe algo que borrar
-					cout << *itr << endl;
-					if (itr != adj[blocks[d]].end()){
+					if (itr != adj[blocks[d]].end()) {
 						adj[blocks[d]].erase(*itr);
 						adj[blocks[d]].insert(blocks[s]);
+					}
+					// Caso de linea directamente anterior al else
+					else if (d == i-1 && !match(lines[s], "else")) {
+						// cout << blocks[s] << endl;
+						adj[blocks[d]].insert(blocks[s]);
+					}
+					// Caso else dentro del if correspondiente al else
+					else if (match(lines[d+1], "else") && !else_visited && identations[i-1] != identations[i+1]) {
+						cout << blocks[s] << endl;
+						adj[blocks[d]].insert(blocks[s]);
+						else_visited = true;
 					}
 				}
 			}

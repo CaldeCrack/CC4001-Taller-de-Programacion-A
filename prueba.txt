@@ -4,12 +4,8 @@ while x > 3:
 		a = 10
 	if x > y:
 		z = 2
-		if x > 8:
-			o = 1
-		if x > 6:
-			o = 0
-		else:
-			a -= 1298
+		while y > 3:
+			x = 2
 	else:
 		x = 6
 		a = 1

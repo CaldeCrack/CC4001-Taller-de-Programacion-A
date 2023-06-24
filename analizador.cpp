@@ -109,9 +109,9 @@ vector <int> conectar_while(int start, int end, int tab) {
 
 	// encontrar el while con menor identacion
 	// si no existe el end queda igual
-	for (int i=0; i<whiles.size(); i++) {
-		if (match(lines[whiles[i]], "while")) {
-			end = whiles[i];
+	for (int k=whiles.size()-1; k>0; k--) {
+		if (match(lines[whiles[k]], "while")) {
+			end = whiles[k];
 			break;
 		}
 	}
@@ -119,17 +119,16 @@ vector <int> conectar_while(int start, int end, int tab) {
 	// Hallar los bloques que retornan al while padre
 	// Caso 1: No había while
 	if (end == j)
-		for (int i=0; i<whiles.size(); i++)
-			res.push_back(blocks[whiles[i]]);
+		for (int k=0; k<whiles.size(); k++)
+			res.push_back(blocks[whiles[k]]);
 
 	// Caso 2: Había while
 	else {
-		int k = whiles.size();
-		while (whiles[k] != end) {
+		int k = whiles.size()-1;
+		while (whiles[k] > end) {
 			res.push_back(blocks[whiles[k]]);
 			k--;
 		}
-		res.push_back(blocks[whiles[k]]);
 	}
 
 	//TODO Caso else
@@ -206,7 +205,6 @@ void build(int start, int end, bool inside_while) {
 						for (int j : adj[blocks[i]]) {
 							if (j > blocks[s]) {
 								adj[blocks[i]].erase(j);
-								break;
 							}
 						}
 					}
@@ -389,7 +387,7 @@ int main() {
 				// Si la linea anterior tiene distinta tabulacion
 				if (last_id != id_line){
 					// caso if o else previo a un if
-					if (i > 0 && !match(lines[i-1], "else") && !match(lines[i-1], "if"))
+					if (i > 0 && !match(lines[i-1], "else") && !match(lines[i-1], "if") && !match(lines[i-1], "while"))
 						indexBlocks++;
 				}
 				
@@ -402,7 +400,7 @@ int main() {
 			}
 			else if (match(line, "while")) {
 				// Si la linea anterior no tiene condición
-				if (i > 0)
+				if (i > 0 && !match(lines[i-1], "while") && !match(lines[i-1], "else") && !match(lines[i-1], "if"))
 					indexBlocks++;
 
 				blocks.push_back(indexBlocks);
@@ -443,6 +441,7 @@ int main() {
 	int blocks_sz = (int) blocks.size();
 	// Entrega el número de nodos y arcos
 	int nodos = blocks[blocks_sz-1];
+	nodos++;
 
 	adj.resize(nodos);
 	visited.assign(nodos, false);

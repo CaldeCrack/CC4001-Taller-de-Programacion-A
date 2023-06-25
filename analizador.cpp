@@ -471,7 +471,7 @@ int main() {
 	// Recorrer las lineas
 	for (int i = 0; i < line_size; i++) {
 
-		// Encontramos un while
+		// Invariante del while
 		if (match(lines[i], "while")) {
 			int j = i, s = i;
 			// Hallar la salida del while
@@ -483,7 +483,7 @@ int main() {
 				// Contar cuantas aristas se pasan del scope
 				int a = 0;
 				for (int k : adj[blocks[j]])
-					if (s <= k)
+					if (blocks[s] <= k)
 						a++;
 				// Borrar aristas correspondientes (sets son ordenados)
 				for (int k = 0; k < a; k++) {
@@ -498,7 +498,7 @@ int main() {
 
 			auto itr = adj[blocks[i]].end();
 			// Añadimos el invariante. Un if tiene a lo más 2 salidas.
-			while (adj[blocks[i]].size() > 3) {
+			while (adj[blocks[i]].size() > 2) {
 				itr--;
 				adj[blocks[i]].erase(itr);
 			}

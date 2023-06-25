@@ -1,5 +1,12 @@
-while x > 2:
-	if x < 3:
-		a = 3
+while x > 3:
+	if x > y:
+		if x > 6:
+			o = 0
+		else:
+			a -= 1298
+			if x < 3:
+				t = 666
 	else:
-		b -= 5
+		x = 6
+	a = 2
+print(a)

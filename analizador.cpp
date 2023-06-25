@@ -173,7 +173,6 @@ void build(int start, int end, bool inside_while) {
 	// No podemos leer más líneas
 	if (start >= line_size || start > end)
 		return;
-	
 	int s = start;
 	for (int i = start; i < end; i++) {
 		// Array de la línea actual
@@ -210,11 +209,16 @@ void build(int start, int end, bool inside_while) {
 			if (!inside_while) {
 				adj[blocks[i]].insert(blocks[s]);
 				if (!match(lines[s], "else")) {
+					int a = 0;
 					// Quitar aristas si habian ifs de por medio
 					if (adj[blocks[i]].size() > 2)
 						for (int j : adj[blocks[i]])
 							if (j > blocks[s])
-								adj[blocks[i]].erase(j);
+								a++;
+						for (int k = 0; k < a; k++){
+							auto itr = adj[blocks[i]].end();
+							adj[blocks[i]].erase(--itr);
+						}
 				}
 			}
 			
@@ -307,7 +311,7 @@ void build(int start, int end, bool inside_while) {
 				return;
 			}
 
-			// Linea sin keywords antes de while solo puede conectarse al while (si tienen misma identacion)
+			// Invariante linea sin keywords antes de while solo puede conectarse al while (si tienen misma identacion)
 			if (i > 0 && !match(lines[i-1], "if") && !match(lines[i-1], "while") && adj[blocks[i-1]].size() > 1 && identations[i] == identations[i-1]) {
 				auto last = adj[blocks[i-1]].end();
 				adj[blocks[i-1]].erase(--last);
@@ -488,10 +492,16 @@ int main() {
 			}
 		}
 
-		else if (match(lines[i], "if"))
+		else if (match(lines[i], "if")) {
 			adj[blocks[i]].insert(blocks[i+1]);
 
-
+			auto itr = adj[blocks[i]].end();
+			// Añadimos el invariante. Un if tiene a lo más 2 salidas.
+			while (adj[blocks[i]].size() > 3) {
+				itr--;
+				adj[blocks[i]].erase(itr);
+			}
+		}
 	}
 
 	// Borramos la "diagonal"

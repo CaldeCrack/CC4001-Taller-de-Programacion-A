@@ -307,6 +307,12 @@ void build(int start, int end, bool inside_while) {
 				return;
 			}
 
+			// Linea sin keywords antes de while solo puede conectarse al while (si tienen misma identacion)
+			if (i > 0 && !match(lines[i-1], "if") && !match(lines[i-1], "while") && adj[blocks[i-1]].size() > 1 && identations[i] == identations[i-1]) {
+				auto last = adj[blocks[i-1]].end();
+				adj[blocks[i-1]].erase(--last);
+			}
+
 			// Conectamos el while con el cuerpo y la salida
 			adj[blocks[i]].insert(blocks[i+1]);
 			adj[blocks[i]].insert(blocks[s]);
@@ -481,6 +487,9 @@ int main() {
 				}
 			}
 		}
+
+		else if (match(lines[i], "if"))
+			adj[blocks[j]].insert(blocks[j+1]);
 	}
 
 	// Borramos la "diagonal"

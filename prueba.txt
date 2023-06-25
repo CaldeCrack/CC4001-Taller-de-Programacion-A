@@ -3,8 +3,8 @@ while x > 3:
 		if x > 6:
 			o = 0
 		else:
-			a -= 1298 ---
-			while x < 3:
+			a -= 1298
+			if x < 3:
 				t = 666
 	else:
 		x = 6

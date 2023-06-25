@@ -1,20 +1,26 @@
-while x > 2:
-	while x > 3:
-		if x > 2:
-			while x > 3:
-				if x > 4:
-					while x > 5:
-						if x > 6:
-							while x > 7:
-								a = 1
-				else:
-					if x < 2:
-						a = 1
-				print(a)
-			break
+while x > 3:
+	x = 4
+	if y > 2:
+		a = 10
+	if x > y:
+		z = 2
+		if x > 8:
+			o = 1
+		if x > 6:
+			o = 0
 		else:
-			while x > 1:
-				continue
-	if a > 1:
-		a = 2
-print("FIN")
+			a -= 1298
+			if x < 3:
+				t = 666
+			else:
+				t -= 1
+	else:
+		x = 6
+		a = 1
+		if a < 2:
+			a = 1
+		if x > 2:
+			a -= 2
+		if x > -1:
+			a -= 2
+	a = 2

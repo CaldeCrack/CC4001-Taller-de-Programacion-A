@@ -465,10 +465,10 @@ int main() {
 	int line_size = (int) lines.size();
 	// Recorrer las lineas
 	for (int i = 0; i < line_size; i++) {
-		int j = i, s = i;
 
 		// Encontramos un while
 		if (match(lines[i], "while")) {
+			int j = i, s = i;
 			// Hallar la salida del while
 			while (++s < line_size && identations[i] < identations[s]) {
 				continue;
@@ -489,7 +489,9 @@ int main() {
 		}
 
 		else if (match(lines[i], "if"))
-			adj[blocks[j]].insert(blocks[j+1]);
+			adj[blocks[i]].insert(blocks[i+1]);
+
+
 	}
 
 	// Borramos la "diagonal"

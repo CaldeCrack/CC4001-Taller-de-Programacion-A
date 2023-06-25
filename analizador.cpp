@@ -211,14 +211,15 @@ void build(int start, int end, bool inside_while) {
 				if (!match(lines[s], "else")) {
 					int a = 0;
 					// Quitar aristas si habian ifs de por medio
-					if (adj[blocks[i]].size() > 2)
-						for (int j : adj[blocks[i]])
-							if (j > blocks[s])
-								a++;
-						for (int k = 0; k < a; k++){
-							auto itr = adj[blocks[i]].end();
-							adj[blocks[i]].erase(--itr);
-						}
+					for (int j : adj[blocks[i]])
+						// Contar aristas mayores
+						if (j > blocks[s])
+							a++;
+					for (int k = 0; k < a; k++) {
+						// Eliminar aristas mayores
+						auto itr = adj[blocks[i]].end();
+						adj[blocks[i]].erase(--itr);
+					}
 				}
 			}
 			

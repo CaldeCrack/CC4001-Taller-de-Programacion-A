@@ -1,5 +1,5 @@
+// https://vjudge.net/contest/547505#problem/B
 #include <iostream>
-
 using namespace std;
 
 int n, h, i, extra=0;

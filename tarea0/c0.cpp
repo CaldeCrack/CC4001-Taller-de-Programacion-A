@@ -1,5 +1,5 @@
+// https://vjudge.net/contest/547505#problem/C
 #include <iostream>
-
 using namespace std;
 
 string g;

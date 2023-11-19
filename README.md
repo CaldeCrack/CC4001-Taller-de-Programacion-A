@@ -3,11 +3,6 @@ Resoluciones de las tareas semanales.
 
 [Apunte del ramo.](https://uchile.progcomp.cl/apunte/prologo/introduccion)
 
-## Contenidos
-
-- [CC4001](#cc4001-taller-de-programación-otoño-2023)
-- [Tareas](#tareas)
-
 ## Tareas
 
 - [Tarea 0](tarea0/): Introducción a C++

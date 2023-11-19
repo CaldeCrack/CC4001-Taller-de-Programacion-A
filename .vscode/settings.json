@@ -23,7 +23,6 @@
         "valarray": "cpp",
         "cmath": "cpp",
         "iomanip": "cpp",
-        "functional": "cpp",
-        "sstream": "cpp"
+        "functional": "cpp"
     }
 }
